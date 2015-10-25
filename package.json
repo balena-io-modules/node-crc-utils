@@ -16,7 +16,7 @@
     }
   ],
   "dependencies": {
-    "nan": "^1.8.4"
+    "nan": "^2.1.0"
   },
   "main": "./build/Release/crc32.node",
   "repository": {

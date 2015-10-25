@@ -86,79 +86,79 @@ using namespace v8;
 using namespace node;
 
 NAN_METHOD(crc32_combine) {
-	NanScope();
+	Nan::HandleScope scope;
 
-	if (args.Length() < 3) {
-		NanThrowTypeError("Wrong number of arguments");
-		NanReturnUndefined();
+	if (info.Length() < 3) {
+		Nan::ThrowTypeError("Wrong number of arguments");
+		return;
 	}
 
-	if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()) {
-		NanThrowTypeError("Wrong arguments");
-		NanReturnUndefined();
+	if (!info[0]->IsNumber() || !info[1]->IsNumber() || !info[2]->IsNumber()) {
+		Nan::ThrowTypeError("Wrong arguments");
+		return;
 	}
 
 	unsigned long combine = crc32_combine(
-		args[0]->NumberValue(), // crc32 #1
-		args[1]->NumberValue(), // crc32 #2
-		args[2]->NumberValue()  // len2
+		info[0]->NumberValue(), // crc32 #1
+		info[1]->NumberValue(), // crc32 #2
+		info[2]->NumberValue()  // len2
 		);
 
-	NanReturnValue(NanNewBufferHandle((char *)&combine, sizeof(unsigned long)));
+	info.GetReturnValue().Set(Nan::NewBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
 
 NAN_METHOD(crc32_combine_multi) {
-	NanScope();
+	Nan::HandleScope scope;
 
-	if (args.Length() < 1) {
-		NanThrowTypeError("Wrong number of arguments");
-		NanReturnUndefined();
+	if (info.Length() < 1) {
+		Nan::ThrowTypeError("Wrong number of arguments");
+		return;
 	}
 
-	if (!args[0]->IsArray()) {
-		NanThrowTypeError("Wrong arguments");
-		NanReturnUndefined();
+	if (!info[0]->IsArray()) {
+		Nan::ThrowTypeError("Wrong arguments");
+		return;
 	}
 
-	Local<Array> arr = Local<Array>::Cast(args[0]);
+	Local<Array> arr = Local<Array>::Cast(info[0]);
 	uint32_t arLength = arr->Length();
 
 	if (arLength < 2) {
-		NanThrowTypeError("Array too small. I need min 2 elements");
-		NanReturnUndefined();
+		Nan::ThrowTypeError("Array too small. I need min 2 elements");
+		return;
 	}
 
 	Local<Object> firstElementCrc = Local<Object>::Cast(arr->Get(0));
-	unsigned long retCrc = firstElementCrc->Get(NanNew("crc"))->Uint32Value();
-	unsigned long retLen = firstElementCrc->Get(NanNew("len"))->Uint32Value();
+	unsigned long retCrc = firstElementCrc->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
+	unsigned long retLen = firstElementCrc->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
 
 	uint32_t n;
 	for (n = 1; n < arLength; n++){
 		Local<Object> obj = Local<Object>::Cast(arr->Get(n));
-		unsigned long crc1 = obj->Get(NanNew("crc"))->Uint32Value();
-		unsigned long len2 = obj->Get(NanNew("len"))->Uint32Value();
+		unsigned long crc1 = obj->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
+		unsigned long len2 = obj->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
 		retCrc = crc32_combine(retCrc, crc1, len2);
 		retLen += len2;
 	}
 
 	int length = sizeof(unsigned long);
-	Local<Object> crcBuffer = NanNewBufferHandle((char *)&retCrc, length);
+	Local<Object> crcBuffer = Nan::NewBuffer((char *)&retCrc, length).ToLocalChecked();
 
-	Local<Object> lengthBuffer = NanNewBufferHandle((char *)&retLen, length);
+	Local<Object> lengthBuffer = Nan::NewBuffer((char *)&retLen, length).ToLocalChecked();
 
-	Local<Number> numRetLen = NanNew<Number>(retLen);
+	Local<Number> numRetLen = Nan::New<Number>(retLen);
 
-	Local<Object> retValObj = NanNew<Object>();
-	retValObj->Set(NanNew("combinedCrc32"), crcBuffer);
-	retValObj->Set(NanNew("intLength"), numRetLen);
-	retValObj->Set(NanNew("bufferLength"), lengthBuffer);
+	Local<Object> retValObj = Nan::New<Object>();
+	retValObj->Set(Nan::New("combinedCrc32").ToLocalChecked(), crcBuffer);
+	retValObj->Set(Nan::New("intLength").ToLocalChecked(), numRetLen);
+	retValObj->Set(Nan::New("bufferLength").ToLocalChecked(), lengthBuffer);
 
-	NanReturnValue(retValObj);
+	info.GetReturnValue().Set(retValObj);
 }
 
 void init(Handle<Object> exports) {
-	exports->Set(NanNew("crc32_combine"), NanNew<FunctionTemplate>(crc32_combine)->GetFunction());
-	exports->Set(NanNew("crc32_combine_multi"), NanNew<FunctionTemplate>(crc32_combine_multi)->GetFunction());
+	exports->Set(Nan::New("crc32_combine").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine)->GetFunction());
+	exports->Set(Nan::New("crc32_combine_multi").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine_multi)->GetFunction());
 }
 
 NODE_MODULE(crc32, init)
