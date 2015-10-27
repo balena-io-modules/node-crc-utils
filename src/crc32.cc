@@ -104,7 +104,7 @@ NAN_METHOD(crc32_combine) {
 		info[2]->NumberValue()  // len2
 		);
 
-	info.GetReturnValue().Set(Nan::NewBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
+	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
 
 NAN_METHOD(crc32_combine_multi) {
@@ -142,9 +142,9 @@ NAN_METHOD(crc32_combine_multi) {
 	}
 
 	int length = sizeof(unsigned long);
-	Local<Object> crcBuffer = Nan::NewBuffer((char *)&retCrc, length).ToLocalChecked();
+	Local<Object> crcBuffer = Nan::CopyBuffer((char *)&retCrc, length).ToLocalChecked();
 
-	Local<Object> lengthBuffer = Nan::NewBuffer((char *)&retLen, length).ToLocalChecked();
+	Local<Object> lengthBuffer = Nan::CopyBuffer((char *)&retLen, length).ToLocalChecked();
 
 	Local<Number> numRetLen = Nan::New<Number>(retLen);
 
