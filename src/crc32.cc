@@ -108,6 +108,10 @@ NAN_METHOD(crc32_combine) {
 	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
 
+unsigned long getUint32Value(Local<Object> obj, const char* key, Local<Context> context) {
+	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).ToChecked();
+}
+
 NAN_METHOD(crc32_combine_multi) {
 	Nan::HandleScope scope;
 
@@ -129,16 +133,16 @@ NAN_METHOD(crc32_combine_multi) {
 		return;
 	}
 
-	Local<Object> firstElementCrc = Local<Object>::Cast(arr->Get(0));
+	auto firstElementCrc = Nan::Get(arr, 0).ToLocalChecked().As<Object>();
 	auto context = Nan::GetCurrentContext();
-	unsigned int retCrc = firstElementCrc->Get(Nan::New("crc").ToLocalChecked())->Uint32Value(context).ToChecked();
-	unsigned int retLen = firstElementCrc->Get(Nan::New("len").ToLocalChecked())->Uint32Value(context).ToChecked();
+	auto retCrc = getUint32Value(firstElementCrc, "crc", context);
+	auto retLen = getUint32Value(firstElementCrc, "len", context);
 
 	uint32_t n;
 	for (n = 1; n < arLength; n++){
-		Local<Object> obj = Local<Object>::Cast(arr->Get(n));
-		unsigned long crc1 = obj->Get(Nan::New("crc").ToLocalChecked())->Uint32Value(context).ToChecked();
-		unsigned long len2 = obj->Get(Nan::New("len").ToLocalChecked())->Uint32Value(context).ToChecked();
+		auto obj = Nan::Get(arr, n).ToLocalChecked().As<Object>();
+		auto crc1 = getUint32Value(obj, "crc", context);
+		auto len2 = getUint32Value(obj, "len", context);
 		retCrc = crc32_combine(retCrc, crc1, len2);
 		retLen += len2;
 	}
@@ -151,9 +155,9 @@ NAN_METHOD(crc32_combine_multi) {
 	Local<Number> numRetLen = Nan::New<Number>(retLen);
 
 	Local<Object> retValObj = Nan::New<Object>();
-	retValObj->Set(Nan::New("combinedCrc32").ToLocalChecked(), crcBuffer);
-	retValObj->Set(Nan::New("intLength").ToLocalChecked(), numRetLen);
-	retValObj->Set(Nan::New("bufferLength").ToLocalChecked(), lengthBuffer);
+	Nan::Set(retValObj, Nan::New("combinedCrc32").ToLocalChecked(), crcBuffer);
+	Nan::Set(retValObj, Nan::New("intLength").ToLocalChecked(), numRetLen);
+	Nan::Set(retValObj, Nan::New("bufferLength").ToLocalChecked(), lengthBuffer);
 
 	info.GetReturnValue().Set(retValObj);
 }
