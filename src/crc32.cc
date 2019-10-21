@@ -112,16 +112,18 @@ unsigned long getUint32Value(Local<Object> obj, const char* key, Local<Context> 
 	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).ToChecked();
 }
 
+const char* crc32_combine_multi_args_error = "The argument should be an Array of at least 2 Objects with 'crc' and 'len' keys";
+
 NAN_METHOD(crc32_combine_multi) {
 	Nan::HandleScope scope;
 
 	if (info.Length() < 1) {
-		Nan::ThrowTypeError("Wrong number of arguments");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
 	if (!info[0]->IsArray()) {
-		Nan::ThrowTypeError("Wrong arguments");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
@@ -129,18 +131,28 @@ NAN_METHOD(crc32_combine_multi) {
 	uint32_t arLength = arr->Length();
 
 	if (arLength < 2) {
-		Nan::ThrowTypeError("Array too small. I need min 2 elements");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
-	auto firstElementCrc = Nan::Get(arr, 0).ToLocalChecked().As<Object>();
+	auto maybeFirstElementCrc = Nan::Get(arr, 0).ToLocalChecked();
+	if (!maybeFirstElementCrc->IsObject()) {
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
+		return;
+	}
+	auto firstElementCrc = maybeFirstElementCrc.As<Object>();
 	auto context = Nan::GetCurrentContext();
 	auto retCrc = getUint32Value(firstElementCrc, "crc", context);
 	auto retLen = getUint32Value(firstElementCrc, "len", context);
 
 	uint32_t n;
 	for (n = 1; n < arLength; n++){
-		auto obj = Nan::Get(arr, n).ToLocalChecked().As<Object>();
+		auto maybeObj = Nan::Get(arr, n).ToLocalChecked();
+		if (!maybeObj->IsObject()) {
+			Nan::ThrowTypeError(crc32_combine_multi_args_error);
+			return;
+		}
+		auto obj = maybeObj.As<Object>();
 		auto crc1 = getUint32Value(obj, "crc", context);
 		auto len2 = getUint32Value(obj, "len", context);
 		retCrc = crc32_combine(retCrc, crc1, len2);
