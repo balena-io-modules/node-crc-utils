@@ -98,11 +98,12 @@ NAN_METHOD(crc32_combine) {
 		return;
 	}
 
+	auto context = Nan::GetCurrentContext();
 	unsigned long combine = crc32_combine(
-		info[0]->NumberValue(), // crc32 #1
-		info[1]->NumberValue(), // crc32 #2
-		info[2]->NumberValue()  // len2
-		);
+		info[0]->NumberValue(context).ToChecked(), // crc32 #1
+		info[1]->NumberValue(context).ToChecked(), // crc32 #2
+		info[2]->NumberValue(context).ToChecked()  // len2
+	);
 
 	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
@@ -129,14 +130,15 @@ NAN_METHOD(crc32_combine_multi) {
 	}
 
 	Local<Object> firstElementCrc = Local<Object>::Cast(arr->Get(0));
-	unsigned long retCrc = firstElementCrc->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
-	unsigned long retLen = firstElementCrc->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
+	auto context = Nan::GetCurrentContext();
+	unsigned int retCrc = firstElementCrc->Get(Nan::New("crc").ToLocalChecked())->Uint32Value(context).ToChecked();
+	unsigned int retLen = firstElementCrc->Get(Nan::New("len").ToLocalChecked())->Uint32Value(context).ToChecked();
 
 	uint32_t n;
 	for (n = 1; n < arLength; n++){
 		Local<Object> obj = Local<Object>::Cast(arr->Get(n));
-		unsigned long crc1 = obj->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
-		unsigned long len2 = obj->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
+		unsigned long crc1 = obj->Get(Nan::New("crc").ToLocalChecked())->Uint32Value(context).ToChecked();
+		unsigned long len2 = obj->Get(Nan::New("len").ToLocalChecked())->Uint32Value(context).ToChecked();
 		retCrc = crc32_combine(retCrc, crc1, len2);
 		retLen += len2;
 	}
@@ -156,10 +158,9 @@ NAN_METHOD(crc32_combine_multi) {
 	info.GetReturnValue().Set(retValObj);
 }
 
-void init(Handle<Object> exports) {
-	exports->Set(Nan::New("crc32_combine").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine)->GetFunction());
-	exports->Set(Nan::New("crc32_combine_multi").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine_multi)->GetFunction());
+NAN_MODULE_INIT(Initialize) {
+	NAN_EXPORT(target, crc32_combine);
+	NAN_EXPORT(target, crc32_combine_multi);
 }
 
-NODE_MODULE(crc32, init)
-
+NODE_MODULE(crc32, Initialize);
