@@ -100,16 +100,16 @@ NAN_METHOD(crc32_combine) {
 
 	auto context = Nan::GetCurrentContext();
 	unsigned long combine = crc32_combine(
-		info[0]->NumberValue(context).ToChecked(), // crc32 #1
-		info[1]->NumberValue(context).ToChecked(), // crc32 #2
-		info[2]->NumberValue(context).ToChecked()  // len2
+		info[0]->NumberValue(context).FromJust(), // crc32 #1
+		info[1]->NumberValue(context).FromJust(), // crc32 #2
+		info[2]->NumberValue(context).FromJust()  // len2
 	);
 
 	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
 
 unsigned long getUint32Value(Local<Object> obj, const char* key, Local<Context> context) {
-	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).ToChecked();
+	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).FromJust();
 }
 
 const char* crc32_combine_multi_args_error = "The argument should be an Array of at least 2 Objects with 'crc' and 'len' keys";
