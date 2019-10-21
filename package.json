@@ -19,9 +19,6 @@
       "email": "page@resin.io"
     }
   ],
-  "dependencies": {
-    "nan": "^2.1.0"
-  },
   "main": "./build/Release/crc32.node",
   "repository": {
     "type": "git",
@@ -29,5 +26,8 @@
   },
   "engines": {
     "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "nan": "^2.14.0"
   }
 }
