@@ -98,25 +98,32 @@ NAN_METHOD(crc32_combine) {
 		return;
 	}
 
+	auto context = Nan::GetCurrentContext();
 	unsigned long combine = crc32_combine(
-		info[0]->NumberValue(), // crc32 #1
-		info[1]->NumberValue(), // crc32 #2
-		info[2]->NumberValue()  // len2
-		);
+		info[0]->NumberValue(context).FromJust(), // crc32 #1
+		info[1]->NumberValue(context).FromJust(), // crc32 #2
+		info[2]->NumberValue(context).FromJust()  // len2
+	);
 
 	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
 }
+
+unsigned long getUint32Value(Local<Object> obj, const char* key, Local<Context> context) {
+	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).FromJust();
+}
+
+const char* crc32_combine_multi_args_error = "The argument should be an Array of at least 2 Objects with 'crc' and 'len' keys";
 
 NAN_METHOD(crc32_combine_multi) {
 	Nan::HandleScope scope;
 
 	if (info.Length() < 1) {
-		Nan::ThrowTypeError("Wrong number of arguments");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
 	if (!info[0]->IsArray()) {
-		Nan::ThrowTypeError("Wrong arguments");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
@@ -124,19 +131,30 @@ NAN_METHOD(crc32_combine_multi) {
 	uint32_t arLength = arr->Length();
 
 	if (arLength < 2) {
-		Nan::ThrowTypeError("Array too small. I need min 2 elements");
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
 		return;
 	}
 
-	Local<Object> firstElementCrc = Local<Object>::Cast(arr->Get(0));
-	unsigned long retCrc = firstElementCrc->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
-	unsigned long retLen = firstElementCrc->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
+	auto maybeFirstElementCrc = Nan::Get(arr, 0).ToLocalChecked();
+	if (!maybeFirstElementCrc->IsObject()) {
+		Nan::ThrowTypeError(crc32_combine_multi_args_error);
+		return;
+	}
+	auto firstElementCrc = maybeFirstElementCrc.As<Object>();
+	auto context = Nan::GetCurrentContext();
+	auto retCrc = getUint32Value(firstElementCrc, "crc", context);
+	auto retLen = getUint32Value(firstElementCrc, "len", context);
 
 	uint32_t n;
 	for (n = 1; n < arLength; n++){
-		Local<Object> obj = Local<Object>::Cast(arr->Get(n));
-		unsigned long crc1 = obj->Get(Nan::New("crc").ToLocalChecked())->Uint32Value();
-		unsigned long len2 = obj->Get(Nan::New("len").ToLocalChecked())->Uint32Value();
+		auto maybeObj = Nan::Get(arr, n).ToLocalChecked();
+		if (!maybeObj->IsObject()) {
+			Nan::ThrowTypeError(crc32_combine_multi_args_error);
+			return;
+		}
+		auto obj = maybeObj.As<Object>();
+		auto crc1 = getUint32Value(obj, "crc", context);
+		auto len2 = getUint32Value(obj, "len", context);
 		retCrc = crc32_combine(retCrc, crc1, len2);
 		retLen += len2;
 	}
@@ -149,17 +167,16 @@ NAN_METHOD(crc32_combine_multi) {
 	Local<Number> numRetLen = Nan::New<Number>(retLen);
 
 	Local<Object> retValObj = Nan::New<Object>();
-	retValObj->Set(Nan::New("combinedCrc32").ToLocalChecked(), crcBuffer);
-	retValObj->Set(Nan::New("intLength").ToLocalChecked(), numRetLen);
-	retValObj->Set(Nan::New("bufferLength").ToLocalChecked(), lengthBuffer);
+	Nan::Set(retValObj, Nan::New("combinedCrc32").ToLocalChecked(), crcBuffer);
+	Nan::Set(retValObj, Nan::New("intLength").ToLocalChecked(), numRetLen);
+	Nan::Set(retValObj, Nan::New("bufferLength").ToLocalChecked(), lengthBuffer);
 
 	info.GetReturnValue().Set(retValObj);
 }
 
-void init(Handle<Object> exports) {
-	exports->Set(Nan::New("crc32_combine").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine)->GetFunction());
-	exports->Set(Nan::New("crc32_combine_multi").ToLocalChecked(), Nan::New<FunctionTemplate>(crc32_combine_multi)->GetFunction());
+NAN_MODULE_INIT(Initialize) {
+	NAN_EXPORT(target, crc32_combine);
+	NAN_EXPORT(target, crc32_combine_multi);
 }
 
-NODE_MODULE(crc32, init)
-
+NODE_MODULE(crc32, Initialize);
