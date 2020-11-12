@@ -20,6 +20,9 @@
     }
   ],
   "main": "./build/Release/crc32.node",
+  "scripts": {
+    "test": "mocha"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/resin-io/node-crc-utils.git"
@@ -29,5 +32,9 @@
   },
   "dependencies": {
     "nan": "^2.14.0"
+  },
+  "devDependencies": {
+    "buffer-crc32": "^0.2.13",
+    "mocha": "^8.2.1"
   }
 }
