@@ -17,6 +17,10 @@
     {
       "name": "Pagan Gazzard",
       "email": "page@balena.io"
+    },
+    {
+      "name": "Alexis Svinartchouk",
+      "email": "alexis@balena.io"
     }
   ],
   "main": "./build/Release/crc32.node",
