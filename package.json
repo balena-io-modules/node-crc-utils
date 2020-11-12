@@ -1,5 +1,5 @@
 {
-  "name": "resin-crc-utils",
+  "name": "@balena/node-crc-utils",
   "version": "1.0.3",
   "description": "CRC Utils. Combines two or more CRC32 checksums into new one.",
   "keywords": [
@@ -16,7 +16,7 @@
     },
     {
       "name": "Pagan Gazzard",
-      "email": "page@resin.io"
+      "email": "page@balena.io"
     }
   ],
   "main": "./build/Release/crc32.node",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/resin-io/node-crc-utils.git"
+    "url": "https://github.com/balena-io-modules/node-crc-utils.git"
   },
   "engines": {
     "node": ">= 0.8.0"
