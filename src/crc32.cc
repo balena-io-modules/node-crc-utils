@@ -6,8 +6,8 @@
 
 #define GF2_DIM 32
 
-unsigned long gf2_matrix_times(unsigned long *mat, unsigned long vec) {
-    unsigned long sum = 0;
+uint32_t gf2_matrix_times(uint32_t *mat, uint32_t vec) {
+    uint32_t sum = 0;
     while (vec) {
         if (vec & 1) {
             sum ^= *mat;
@@ -18,18 +18,18 @@ unsigned long gf2_matrix_times(unsigned long *mat, unsigned long vec) {
     return sum;
 }
 
-void gf2_matrix_square(unsigned long *square, unsigned long *mat) {
+void gf2_matrix_square(uint32_t *square, uint32_t *mat) {
     int n;
     for (n = 0; n < GF2_DIM; n++) {
         square[n] = gf2_matrix_times(mat, mat[n]);
     }
 }
 
-unsigned long crc32_combine(unsigned long crc1, unsigned long crc2, long len2) {
+uint32_t crc32_combine(uint32_t crc1, uint32_t crc2, long len2) {
     int n;
-    unsigned long row;
-    unsigned long even[GF2_DIM];    /* even-power-of-two zeros operator */
-    unsigned long odd[GF2_DIM];     /* odd-power-of-two zeros operator */
+    uint32_t row;
+    uint32_t even[GF2_DIM];    /* even-power-of-two zeros operator */
+    uint32_t odd[GF2_DIM];     /* odd-power-of-two zeros operator */
 
     /* degenerate case (also disallow negative lengths) */
     if (len2 <= 0) {
@@ -99,16 +99,16 @@ NAN_METHOD(crc32_combine) {
 	}
 
 	auto context = Nan::GetCurrentContext();
-	unsigned long combine = crc32_combine(
+	uint32_t combine = crc32_combine(
 		info[0]->NumberValue(context).FromJust(), // crc32 #1
 		info[1]->NumberValue(context).FromJust(), // crc32 #2
 		info[2]->NumberValue(context).FromJust()  // len2
 	);
 
-	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(unsigned long)).ToLocalChecked());
+	info.GetReturnValue().Set(Nan::CopyBuffer((char *)&combine, sizeof(uint32_t)).ToLocalChecked());
 }
 
-unsigned long getUint32Value(Local<Object> obj, const char* key, Local<Context> context) {
+uint32_t getUint32Value(Local<Object> obj, const char* key, Local<Context> context) {
 	return Nan::Get(obj, Nan::New(key).ToLocalChecked()).ToLocalChecked()->Uint32Value(context).FromJust();
 }
 
@@ -159,7 +159,7 @@ NAN_METHOD(crc32_combine_multi) {
 		retLen += len2;
 	}
 
-	int length = sizeof(unsigned long);
+	int length = sizeof(uint32_t);
 	Local<Object> crcBuffer = Nan::CopyBuffer((char *)&retCrc, length).ToLocalChecked();
 
 	Local<Object> lengthBuffer = Nan::CopyBuffer((char *)&retLen, length).ToLocalChecked();
