@@ -8,17 +8,17 @@ var bar = new Buffer('bar');
 
 var fooCrc32 = crc32(foo); // <Buffer 8c 73 65 21>
 var barCrc32 = crc32(bar); // <Buffer 76 ff 8c aa>
- 
+
 var foobar = new Buffer('foobar');
 var foobarCrc32 = crc32(foobar);
-var foobarCrc32Combined = crc.crc32_combine(
-  fooCrc32.readUInt32BE(0), 
-  barCrc32.readUInt32BE(0), 
-  bar.length
-); 
+crc.ready.then(() => {
+	var foobarCrc32Combined = crc.crc32_combine(
+		fooCrc32.readUInt32BE(0),
+		barCrc32.readUInt32BE(0),
+		bar.length,
+	);
 
-
-// Endianness prepared for GZIP format
-console.log(foobarCrc32);         // <Buffer 9e f6 1f 95>
-console.log(foobarCrc32Combined); // <Buffer 95 1f f6 9e>
-
+	// Endianness prepared for GZIP format
+	console.log(foobarCrc32);         // <Buffer 9e f6 1f 95>
+	console.log(foobarCrc32Combined); // <Buffer 95 1f f6 9e>
+});
