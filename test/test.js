@@ -79,5 +79,20 @@ describe('combine crc32', () => {
 			assert.equal(foobarbazCrc32Combined.intLength, foobarbaz.length);
 			assert.equal(foobarbazCrc32Combined.combinedCrc32.readUInt32LE(), foobarbazCrc32.readUInt32BE());
 		});
+
+		it('should combine 7 crc32 values', () => {
+			// This is a real world example of jetson-tx2 2.73.1+rev4.prod from the resin-staging-img bucket
+			const foobarbazCrc32Combined = combine.crc32_combine_multi([
+				{crc: 2698248370, len: 4194304},
+				{crc: 1993943163, len: 83886080},
+				{crc: 2290213501, len: 2181038080},
+				{crc: 2321379819, len: 4194304},
+				{crc: 289882218, len: 4194304},
+				{crc: 2742436455, len: 15728640},
+				{crc: 176689199, len: 1048576},
+			]);
+			assert.equal(foobarbazCrc32Combined.intLength, 2294284288);
+			assert.equal(foobarbazCrc32Combined.combinedCrc32.readUInt32LE(), 2579225086);
+		});
 	});
 });
