@@ -22,7 +22,7 @@ void gf2_matrix_square(uint32_t *square, uint32_t *mat) {
 	}
 }
 
-uint32_t crc32_combine(uint32_t crc1, uint32_t crc2, long len2) {
+uint32_t crc32_combine(uint32_t crc1, uint32_t crc2, unsigned long len2) {
 	int n;
 	uint32_t row;
 	uint32_t even[GF2_DIM];    /* even-power-of-two zeros operator */
