@@ -1,0 +1,200 @@
+- commits:
+    - subject: Pin emscripten toolchain to v3.1.5
+      hash: cd86a3a882d377c6daaf9d9fc18da4458e6dea65
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Akis Kesoglou
+    - subject: Add support for Node 18
+      hash: 0872f5c8f2ad7724ac142d5805f037dbb97e57f8
+      body: ""
+      footer:
+        Change-type: major
+        change-type: major
+      author: Akis Kesoglou
+    - subject: Build with Flowzone
+      hash: 4826bb793b4f9f53e579d89fcccc7361d19a671e
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Akis Kesoglou
+  version: 3.0.0
+  title: ""
+  date: 2023-01-20T15:33:45.862Z
+- version: 2.0.1
+  date: 2021-04-06T13:48:23Z
+  commits:
+    - hash: 07794868b0096cbe315a42e71d8bd3f987bea361
+      author: Alexis Svinartchouk
+      footers:
+        change-type: patch
+      subject: Length is an unsigned long, add a test case where one of the lengths is
+        > 2147483648
+      body: null
+- version: 2.0.0
+- date: 2020-11-13T14:11:47Z
+- commits:
+    - hash: ae83ca206a7433722994afedf73d426c83b578c4
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Fix crc32 size
+- commits:
+    - body: null
+- commits:
+    - hash: 20572dcf3cb171116dc7c6d956a5d95fe17b8da4
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Add tests based on the examples
+- commits:
+    - body: null
+- commits:
+    - hash: c69742e5e40c3fff6104121baa41148decd6f8d6
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: major
+- commits:
+    - subject: Rename resin -> balena
+- commits:
+    - body: null
+- commits:
+    - hash: 3638b06c23e39809ce3188afa73480c0e63b7d71
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Add myself to the contributors
+- commits:
+    - body: null
+- commits:
+    - hash: 064c23433061e8532460644896d78bf8674591d4
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: major
+- commits:
+    - subject: Build with emscripten, more tests, update examples
+- commits:
+    - body: null
+- commits:
+    - hash: 121ef9e3337a92cb18c41d1e18ea3359a88c6dd2
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Add .resinci file, build and test on ubuntu with node14
+- commits:
+    - body: null
+- commits:
+    - hash: 5be7d27441be37a4de042a3a3c55b8bcd8acfaa2
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Update readme
+- commits:
+    - body: null
+- version: 1.0.3
+- date: 2019-10-23T08:30:42Z
+- commits:
+    - hash: 13c3bc7854a1de71744d17ebed344274088cae6c
+- commits:
+    - author: Pagan Gazzard
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Move nan back to dependencies to fix builds on downstream installs
+- commits:
+    - body: null
+- version: 1.0.2
+- date: 2019-10-22T15:17:20Z
+- commits:
+    - hash: a0e708833c6d007a4dd6cff923e3ddeb3cc4f296
+- commits:
+    - author: Giovanni Garufi
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Giovanni Garufi <giovanni@balena.io>
+- commits:
+    - subject: Fix version in CHANGELOG
+- commits:
+    - body: null
+- version: 0.0.2
+- date: 2019-10-21T16:07:45Z
+- commits:
+    - hash: bca19357b72341830fabe306fb9bd3dcc4c60fd3
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Fix build on node 12
+- commits:
+    - body: null
+- commits:
+    - hash: e6c22f6723761135a6963e8cb8e7adf73adfb948
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Fix Nan deprecation warnings
+- commits:
+    - body: null
+- commits:
+    - hash: 29431dd1fb00e510d09f706ba90420d96c5fc10f
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: nan is a dev dependency
+- commits:
+    - body: null
+- commits:
+    - hash: fc505ce926a9b22690f4648e23115d0daeaf7724
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Check args in crc32_combine_multi
+- commits:
+    - body: null
+- commits:
+    - hash: 3787449dc6ce387e443391d3e17f17404c458d47
+- commits:
+    - author: Alexis Svinartchouk
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - subject: Make it build on both node 6 and 12
+- commits:
+    - body: null
