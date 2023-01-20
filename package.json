@@ -8,30 +8,20 @@
     "crc",
     "gzip"
   ],
-  "author": "Sławomir Janecki <janecki@gmail.com>",
+  "author": "Balena Ltd. <hello@balena.io>",
   "contributors": [
-    {
-      "name": "Drew Peterson",
-      "email": "peterson.drew@gmail.com"
-    },
-    {
-      "name": "Pagan Gazzard",
-      "email": "page@balena.io"
-    },
-    {
-      "name": "Alexis Svinartchouk",
-      "email": "alexis@balena.io"
-    }
+    "Sławomir Janecki <janecki@gmail.com>",
+    "Drew Peterson <peterson.drew@gmail.com>"
   ],
   "main": "./index.js",
   "files": [
     "index.js",
-    "crc32.js",
-    "crc32.wasm"
+    "crc32.js"
   ],
   "scripts": {
-    "build": "make -j $(nproc)",
-    "prepare": "npm run build",
+    "clean": "make clean && rm -rf ./emsdk",
+    "build": "bash -c 'source ./emsdk/emsdk_env.sh && make -j $(nproc)'",
+    "prepare": "./install-toolchain.sh && npm run build",
     "test": "mocha"
   },
   "repository": {
@@ -39,7 +29,7 @@
     "url": "https://github.com/balena-io-modules/node-crc-utils.git"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">=16"
   },
   "dependencies": {},
   "devDependencies": {
