@@ -1,4 +1,18 @@
 - commits:
+    - subject: Remove repo config from flowzone.yml
+      hash: 6bb1120b73216a04891f8788b18f45a3ae02d5c3
+      body: |
+        This functionality is being deprecated in Flowzone.
+
+        See: https://github.com/product-os/flowzone/pull/833
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Kyle Harding
+  version: 3.0.1
+  title: ""
+  date: 2023-12-19T22:01:29.074Z
+- commits:
     - subject: Pin emscripten toolchain to v3.1.5
       hash: cd86a3a882d377c6daaf9d9fc18da4458e6dea65
       body: ""
