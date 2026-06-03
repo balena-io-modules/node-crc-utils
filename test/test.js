@@ -94,5 +94,46 @@ describe('combine crc32', () => {
 			assert.equal(foobarbazCrc32Combined.intLength, 2294284288);
 			assert.equal(foobarbazCrc32Combined.combinedCrc32.readUInt32LE(), 2579225086);
 		});
+
+		it('should combine crc32 values from parts with lengths greater than 2^32', () => {
+			// This is a real world example of jetson-tx2 2.73.1+rev4.prod from the resin-staging-img bucket
+			const parts = [
+				{
+					crc: 829299124,
+					len: 4194304,
+				},
+				{
+					crc: 1668370310,
+					len: 41943040,
+				},
+				{
+					crc: 2151683831,
+					len: 10120855552,
+				},
+				{
+					crc: 2150186149,
+					len: 4194304,
+				},
+				{
+					crc: 289882218,
+					len: 4194304,
+				},
+				{
+					crc: 2742436455,
+					len: 15728640,
+				},
+				{
+					crc: 1616774360,
+					len: 1048576,
+				}
+			];
+			const bigPartIndex = parts.findIndex(part => part.len > 2**32);
+			// B/c crc32_combine doesn't use the len of the first part,
+			// the big part has to be after the first place for the test actually matter.
+			assert.equal(bigPartIndex, 2);
+			const foobarbazCrc32Combined = combine.crc32_combine_multi(parts);
+			assert.equal(foobarbazCrc32Combined.intLength, parts.reduce((sum, part) => sum + part.len, 0));
+			assert.equal(foobarbazCrc32Combined.combinedCrc32.readUInt32LE(), 90792522);
+		});
 	});
 });
