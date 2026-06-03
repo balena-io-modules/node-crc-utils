@@ -31,10 +31,9 @@
   "engines": {
     "node": ">=16"
   },
-  "dependencies": {},
   "devDependencies": {
     "buffer-crc32": "^0.2.13",
-    "mocha": "^8.2.1"
+    "mocha": "^11.7.6"
   },
   "versionist": {
     "publishedAt": "2023-12-19T22:01:29.136Z"
