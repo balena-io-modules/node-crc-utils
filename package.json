@@ -1,6 +1,6 @@
 {
   "name": "@balena/node-crc-utils",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "CRC Utils. Combines two or more CRC32 checksums into new one.",
   "keywords": [
     "crc32",
@@ -36,6 +36,6 @@
     "mocha": "^11.7.6"
   },
   "versionist": {
-    "publishedAt": "2023-12-19T22:01:29.136Z"
+    "publishedAt": "2026-06-03T09:48:49.254Z"
   }
 }

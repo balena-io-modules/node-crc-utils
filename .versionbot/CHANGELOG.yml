@@ -1,4 +1,45 @@
 - commits:
+    - subject: Add support for combining crcs of parts > 4GB
+      hash: 50e00c06cd2631ed0d056120c2901672449139af
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+        See: https://balena.fibery.io/Work/Project/2628
+        see: https://balena.fibery.io/Work/Project/2628
+      author: Thodoris Greasidis
+    - subject: Update flowzone config
+      hash: ed447cfd52c34e92890ac37dc5a51fb12a441c38
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+    - subject: ".gitignore: Add the emsdk & the build output"
+      hash: 442fee6a3ee8905b8147f9f3531d2b3c88d2dc41
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+    - subject: Add an npmrc to block lockfile creation
+      hash: 7a9ffd3ab7505ae10d18539eeabd4c2dbd5e3afb
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+    - subject: Update mocha to unblock tests on node 26
+      hash: 6b399ac512440efcf86bc607eab1857e30330706
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+  version: 3.1.0
+  title: ""
+  date: 2026-06-03T09:48:49.187Z
+- commits:
     - subject: Remove repo config from flowzone.yml
       hash: 6bb1120b73216a04891f8788b18f45a3ae02d5c3
       body: |
